@@ -42,6 +42,8 @@ def parse_args() -> upsilon_workshop_client.commands.base_command.Command:
         command = upsilon_workshop_client.commands.clone.Clone(args)
     elif args.command == "push":
         command = upsilon_workshop_client.commands.push.Push(args)
+    elif args.command == "pull":
+        command = upsilon_workshop_client.commands.pull.Pull(args)
     elif args.command == "init":
         command = upsilon_workshop_client.commands.init.Init(args)
     else:

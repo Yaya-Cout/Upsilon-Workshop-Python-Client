@@ -88,6 +88,25 @@ def add_init(subparser: argparse._SubParsersAction) -> None:
     )
 
 
+def add_pull(subparser: argparse._SubParsersAction) -> None:
+    """Add pull arguments to the parser."""
+    logger.debug("Adding pull command...")
+    # Pull a project (upsilon_workshop_client pull <project>)
+    pull_parser = subparser.add_parser(
+        "pull",
+        help="pull a project",
+    )
+
+    # Add the arguments
+    # Path of project to pull
+    pull_parser.add_argument(
+        "path",
+        help="path of project to pull",
+        default=".",
+        nargs="?",
+    )
+
+
 def add_commands(parser: argparse.ArgumentParser) -> None:
     """Add commands to the parser."""
     logger.debug("Adding commands...")
@@ -99,6 +118,7 @@ def add_commands(parser: argparse.ArgumentParser) -> None:
     # Add the commands
     add_clone(subparsers)
     add_push(subparsers)
+    add_pull(subparsers)
     add_init(subparsers)
 
 

@@ -2,6 +2,7 @@
 # Standard Library
 import logging
 import os
+import hashlib
 import json
 
 # Internal
@@ -85,8 +86,45 @@ def save_project_info(project: upsilon_workshop_client.api.project.Project,
         "version": project.version,
         "licence": project.licence,
         "compatibility": project.compatibility,
+        "modified": str(project.modified),
+        "checksums": generate_checksums(path),
         "file_version": 1  # May be used in the future to handle compatibility
     }
     with open(f"{path}/.project_info.json", "w", encoding="utf-8") as f:
         # Save the JSON
         f.write(json.dumps(project_info, indent=4))
+
+
+def generate_checksums(path: str) -> dict[str, str]:
+    """Generate the checksums of the files in the directory."""
+    # Get the real path
+    realpath = os.path.realpath(path)
+
+    # Get the list of files
+    files = os.listdir(realpath)
+
+    # Generate the checksums
+    checksums = {}
+    for file in files:
+        # Skip the README.md and .project_info.json
+        if file in ("README.md", ".project_info.json"):
+            continue
+
+        # Generate the checksum
+        checksum = generate_checksum(f"{realpath}/{file}")
+
+        # Add the checksum to the dictionary
+        checksums[file] = checksum
+
+    return checksums
+
+
+def generate_checksum(path: str) -> str:
+    """Generate the checksum of a file."""
+    # Open the file
+    with open(path, "rb") as f:
+        # Read the file
+        content = f.read()
+
+        # Generate the checksum
+        return hashlib.sha256(content).hexdigest()
