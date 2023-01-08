@@ -50,7 +50,7 @@ def save_project_to_directory(project:
     # Create the files
     create_files(project, realpath)
 
-    # Save URL to the project
+    # Save project info
     save_project_info(project, realpath)
 
 

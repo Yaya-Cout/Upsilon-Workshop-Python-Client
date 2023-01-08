@@ -1,14 +1,12 @@
-"""Client for the Upsilon Workshop - Project cloning handler."""
+"""Client for the Upsilon Workshop - Project pushing handler."""
 # Standard Library
 import logging
 import os
 import sys
 import json
-import requests
 import getpass
 
-# Internal
-# import upsilon_workshop_client.api.project
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +32,8 @@ def push(path: str) -> None:
     response = requests.put(
         payload["url"],
         json=payload,
-        auth=(username, password)
+        auth=(username, password),
+        timeout=10
     )
 
     # Check the response

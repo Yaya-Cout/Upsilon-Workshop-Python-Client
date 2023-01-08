@@ -62,6 +62,32 @@ def add_push(subparser: argparse._SubParsersAction) -> None:
     )
 
 
+def add_init(subparser: argparse._SubParsersAction) -> None:
+    """Add init arguments to the parser."""
+    logger.debug("Adding init command...")
+    # Init a project (upsilon_workshop_client init <project>)
+    init_parser = subparser.add_parser(
+        "init",
+        help="init a project",
+    )
+
+    # Add the arguments
+    # Path of project to init
+    init_parser.add_argument(
+        "path",
+        help="path of project to init",
+        default=".",
+        nargs="?",
+    )
+
+    # Url of the server
+    init_parser.add_argument(
+        "--url",
+        help="url of the server",
+        default="http://127.0.0.1:8000/",
+    )
+
+
 def add_commands(parser: argparse.ArgumentParser) -> None:
     """Add commands to the parser."""
     logger.debug("Adding commands...")
@@ -73,6 +99,7 @@ def add_commands(parser: argparse.ArgumentParser) -> None:
     # Add the commands
     add_clone(subparsers)
     add_push(subparsers)
+    add_init(subparsers)
 
 
 def create_parser() -> argparse.ArgumentParser:
