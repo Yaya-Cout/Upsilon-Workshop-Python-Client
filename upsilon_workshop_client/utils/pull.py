@@ -81,14 +81,11 @@ def pull_project_from_server(project:
     locally_changed_files, distantly_changed_files = get_changed_files(
         project, project_info, realpath)
 
-    # Get the files that have changed on both sides
-    changed_files: list[str] = []
-    for file in locally_changed_files:
-        if file in distantly_changed_files:
-            changed_files.append(file)
-
-    # If files have changed, ask the user if they want to pull anyway
-    if changed_files:
+    if changed_files := [
+        file
+        for file in locally_changed_files
+        if file in distantly_changed_files
+    ]:
         logger.warning("Local files have changed.")
         logger.warning("Files: %s", changed_files)
         logger.warning("Pulling anyway will overwrite these files.")
@@ -98,7 +95,6 @@ def pull_project_from_server(project:
             logger.info("Pull aborted.")
             print("Pull aborted.")
             sys.exit(1)
-    # If no files have changed, just return
     elif not locally_changed_files and not distantly_changed_files:
         logger.info("Project is up to date.")
         print("Project is up to date.")
