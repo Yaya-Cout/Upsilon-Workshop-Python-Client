@@ -5,9 +5,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def add_verbosity(parser: argparse.ArgumentParser) -> None:
-    """Add verbosity arguments to the parser."""
-    logger.debug("Adding verbosity arguments...")
+def add_global(parser: argparse.ArgumentParser) -> None:
+    """Add global arguments to the parser."""
+    logger.debug("Adding global arguments...")
     # Verbose mode (multiple -v for more verbosity)
     parser.add_argument(
         "-v",
@@ -15,6 +15,13 @@ def add_verbosity(parser: argparse.ArgumentParser) -> None:
         action="count",
         default=0,
         help="increase output verbosity",
+    )
+
+    # Url of the server
+    parser.add_argument(
+        "--url",
+        help="url of the server",
+        default="http://127.0.0.1:8000/",
     )
 
 
@@ -80,13 +87,6 @@ def add_init(subparser: argparse._SubParsersAction) -> None:
         nargs="?",
     )
 
-    # Url of the server
-    init_parser.add_argument(
-        "--url",
-        help="url of the server",
-        default="http://127.0.0.1:8000/",
-    )
-
 
 def add_pull(subparser: argparse._SubParsersAction) -> None:
     """Add pull arguments to the parser."""
@@ -106,6 +106,23 @@ def add_pull(subparser: argparse._SubParsersAction) -> None:
         nargs="?",
     )
 
+def add_search(subparser: argparse._SubParsersAction) -> None:
+    """Add search arguments to the parser."""
+    logger.debug("Adding search command...")
+    # Search a project (upsilon_workshop_client search <project>)
+    search_parser = subparser.add_parser(
+        "search",
+        help="search a project",
+    )
+
+    # Add the arguments
+    # Project to search
+    search_parser.add_argument(
+        "keywords",
+        help="keywords to search",
+        nargs="+",
+    )
+
 
 def add_commands(parser: argparse.ArgumentParser) -> None:
     """Add commands to the parser."""
@@ -120,6 +137,7 @@ def add_commands(parser: argparse.ArgumentParser) -> None:
     add_push(subparsers)
     add_pull(subparsers)
     add_init(subparsers)
+    add_search(subparsers)
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -132,7 +150,7 @@ def create_parser() -> argparse.ArgumentParser:
     )
 
     # Add the arguments
-    add_verbosity(parser)
+    add_global(parser)
 
     # Add the commands
     add_commands(parser)

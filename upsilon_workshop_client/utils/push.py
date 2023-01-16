@@ -8,6 +8,9 @@ import getpass
 
 import requests
 
+import upsilon_workshop_client.api.project
+import upsilon_workshop_client.utils.clone
+
 logger = logging.getLogger(__name__)
 
 
@@ -42,6 +45,12 @@ def push(path: str) -> None:
     else:
         logger.error("Error while pushing the project: %s", response.text)
         sys.exit(1)
+
+    # Update the project_info.json
+    upsilon_workshop_client.utils.clone.save_project_info(
+        upsilon_workshop_client.api.project.Project(response.json()),
+        path
+    )
 
 
 def extract_project_name_and_description(path: str, payload:

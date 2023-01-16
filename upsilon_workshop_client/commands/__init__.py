@@ -4,3 +4,4 @@ from upsilon_workshop_client.commands import clone
 from upsilon_workshop_client.commands import init
 from upsilon_workshop_client.commands import pull
 from upsilon_workshop_client.commands import push
+from upsilon_workshop_client.commands import search

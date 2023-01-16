@@ -40,12 +40,14 @@ def parse_args() -> upsilon_workshop_client.commands.base_command.Command:
     # Instantiate the appropriate command
     if args.command == "clone":
         command = upsilon_workshop_client.commands.clone.Clone(args)
-    elif args.command == "push":
-        command = upsilon_workshop_client.commands.push.Push(args)
-    elif args.command == "pull":
-        command = upsilon_workshop_client.commands.pull.Pull(args)
     elif args.command == "init":
         command = upsilon_workshop_client.commands.init.Init(args)
+    elif args.command == "pull":
+        command = upsilon_workshop_client.commands.pull.Pull(args)
+    elif args.command == "push":
+        command = upsilon_workshop_client.commands.push.Push(args)
+    elif args.command == "search":
+        command = upsilon_workshop_client.commands.search.Search(args)
     else:
         # No command specified
         logger.error("No command specified.")
