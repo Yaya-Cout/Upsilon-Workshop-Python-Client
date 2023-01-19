@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 class Init(base_command.Command):
     """Init a project."""
 
+    name = "init"
+
     def __init__(self, args):
         """Initialize the class."""
         logger.debug("Initializing init command...")

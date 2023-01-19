@@ -54,7 +54,7 @@ def add_push(subparser: argparse._SubParsersAction) -> None:
     """Add push arguments to the parser."""
     logger.debug("Adding push command...")
     # Push a project (upsilon_workshop_client push <project>)
-    push_parser = subparser.add_parser(
+    push_parser: argparse.ArgumentParser = subparser.add_parser(
         "push",
         help="push a project",
     )
@@ -73,7 +73,7 @@ def add_init(subparser: argparse._SubParsersAction) -> None:
     """Add init arguments to the parser."""
     logger.debug("Adding init command...")
     # Init a project (upsilon_workshop_client init <project>)
-    init_parser = subparser.add_parser(
+    init_parser: argparse.ArgumentParser = subparser.add_parser(
         "init",
         help="init a project",
     )
@@ -92,7 +92,7 @@ def add_pull(subparser: argparse._SubParsersAction) -> None:
     """Add pull arguments to the parser."""
     logger.debug("Adding pull command...")
     # Pull a project (upsilon_workshop_client pull <project>)
-    pull_parser = subparser.add_parser(
+    pull_parser: argparse.ArgumentParser = subparser.add_parser(
         "pull",
         help="pull a project",
     )
@@ -110,7 +110,7 @@ def add_search(subparser: argparse._SubParsersAction) -> None:
     """Add search arguments to the parser."""
     logger.debug("Adding search command...")
     # Search a project (upsilon_workshop_client search <project>)
-    search_parser = subparser.add_parser(
+    search_parser: argparse.ArgumentParser = subparser.add_parser(
         "search",
         help="search a project",
     )
@@ -124,12 +124,43 @@ def add_search(subparser: argparse._SubParsersAction) -> None:
     )
 
 
+def add_calculator(subparser: argparse._SubParsersAction) -> None:
+    """Add calculator arguments to the parser."""
+    logger.debug("Adding calculator command...")
+    # Calculator (upsilon_workshop_client calculator <command> <expression>)
+    # Create a "subsubparser" for the calculator
+    calculator_parser: argparse.ArgumentParser = subparser.add_parser(
+        "calculator",
+        help="calculator subcommands",
+    )
+
+    # Add the calculator commands
+    # Test command (upsilon_workshop_client calculator test <expression>)
+    test_parser = calculator_parser.add_subparsers(
+        dest="calculator_command",
+        required=True,
+    )
+
+    # Add the arguments
+    # Backup command (upsilon_workshop_client calculator backup <expression>)
+    test_parser.add_parser(
+        "backup",
+        help="backup all the files"
+    ).add_argument(
+        "directory",
+        help="destination directory",
+        default="backup",
+        nargs="?",
+    )
+
+
 def add_commands(parser: argparse.ArgumentParser) -> None:
     """Add commands to the parser."""
     logger.debug("Adding commands...")
 
     subparsers = parser.add_subparsers(
         dest="command",
+        required=True,
     )
 
     # Add the commands
@@ -138,6 +169,7 @@ def add_commands(parser: argparse.ArgumentParser) -> None:
     add_pull(subparsers)
     add_init(subparsers)
     add_search(subparsers)
+    add_calculator(subparsers)
 
 
 def create_parser() -> argparse.ArgumentParser:

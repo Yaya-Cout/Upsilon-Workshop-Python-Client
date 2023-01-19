@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 class Search(base_command.Command):
     """Search a project."""
 
+    name = "search"
+
     def __init__(self, args):
         """Initialize the class."""
         logger.debug("Initializing searc command...")

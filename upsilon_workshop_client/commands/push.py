@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 class Push(base_command.Command):
     """Push a project."""
 
+    name = "push"
+
     def __init__(self, args):
         """Initialize the class."""
         logger.debug("Initializing push command...")

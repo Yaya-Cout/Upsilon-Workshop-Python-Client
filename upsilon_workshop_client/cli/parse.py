@@ -38,7 +38,9 @@ def parse_args() -> upsilon_workshop_client.commands.base_command.Command:
     )
 
     # Instantiate the appropriate command
-    if args.command == "clone":
+    if args.command == "calculator":
+        command = upsilon_workshop_client.commands.calculator.Calculator(args)
+    elif args.command == "clone":
         command = upsilon_workshop_client.commands.clone.Clone(args)
     elif args.command == "init":
         command = upsilon_workshop_client.commands.init.Init(args)

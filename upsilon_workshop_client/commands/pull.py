@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 class Pull(base_command.Command):
     """Pull a project."""
 
+    name = "pull"
+
     def __init__(self, args):
         """Initialize the class."""
         logger.debug("Initializing pull command...")

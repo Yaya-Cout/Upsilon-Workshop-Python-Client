@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 class Clone(base_command.Command):
     """Clone a project."""
 
+    name = "clone"
+
     def __init__(self, args):
         """Initialize the class."""
         logger.debug("Initializing clone command...")
