@@ -65,6 +65,3 @@ def create_files(path: str, storage: dict) -> None:
         # Create the file
         with open(file_path, "w") as f:
             f.write(file["code"])
-
-        # Print the file path
-        print(file_path)

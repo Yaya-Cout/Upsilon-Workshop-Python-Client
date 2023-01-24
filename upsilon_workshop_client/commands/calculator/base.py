@@ -27,6 +27,9 @@ class Calculator(base_command.Command):
         if self.calculator_command == "backup":
             calculator_command = upsilon_workshop_client.commands.calculator.\
                     backup.Backup(self.args)
+        elif self.calculator_command == "upload":
+            calculator_command = upsilon_workshop_client.commands.calculator.\
+                    upload.Upload(self.args)
         else:
             raise NotImplementedError(
                 f"Calculator command '{self.calculator_command}' not "

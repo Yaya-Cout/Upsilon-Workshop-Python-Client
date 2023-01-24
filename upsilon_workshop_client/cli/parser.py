@@ -153,6 +153,15 @@ def add_calculator(subparser: argparse._SubParsersAction) -> None:
         nargs="?",
     )
 
+    # Upload command (upsilon_workshop_client calculator upload <filename>)
+    test_parser.add_parser(
+        "upload",
+        help="upload a file"
+    ).add_argument(
+        "filename",
+        help="filename to upload",
+    )
+
 
 def add_commands(parser: argparse.ArgumentParser) -> None:
     """Add commands to the parser."""
