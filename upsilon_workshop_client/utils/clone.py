@@ -62,6 +62,10 @@ def create_readme(project: upsilon_workshop_client.api.project.Project,
 
     readme += f"{project.description}\n"
 
+    # If the path is a file, don't write the readme
+    if os.path.isfile(path):
+        return
+
     # Save the file
     with open(f"{path}/README.md", "w", encoding="utf-8") as f:
         f.write(readme)
@@ -79,6 +83,10 @@ def create_files(project: upsilon_workshop_client.api.project.Project,
 def save_project_info(project: upsilon_workshop_client.api.project.Project,
                       path: str) -> None:
     """Save the URL to the project."""
+    # If the path is a file, don't save the project info
+    if os.path.isfile(path):
+        return
+
     # Generate the JSON
     project_info = {
         "url": project.url,
@@ -99,6 +107,10 @@ def generate_checksums(path: str) -> dict[str, str]:
     """Generate the checksums of the files in the directory."""
     # Get the real path
     realpath = os.path.realpath(path)
+
+    # If the path is a file, don't generate the checksums
+    if os.path.isfile(realpath):
+        return {}
 
     # Get the list of files
     files = os.listdir(realpath)

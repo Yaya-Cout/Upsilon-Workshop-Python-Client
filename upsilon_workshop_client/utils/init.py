@@ -79,13 +79,14 @@ def add_project_name_and_description(path: str, payload:
     # Get the name of the project
     basename = os.path.basename(realpath)
 
+
     # Try to get the name from the README.md (first line, without "# ")
     try:
         with open(os.path.join(realpath, "README.md"), "r", encoding="utf-8")\
                 as readme:
             name = readme.readline().strip("# ")
             description = readme.read().strip()
-    except FileNotFoundError:
+    except (FileNotFoundError, NotADirectoryError):
         name = basename
         description = ""
         logger.warning("No README.md file found, using the basename as name "
@@ -100,6 +101,19 @@ def add_language(path: str, payload: dict[str, str | list[dict[str, str]]])\
     """Add the language to the payload."""
     # Get the real path
     realpath = os.path.realpath(path)
+
+    # If the path is a file, use the extension
+    if os.path.isfile(realpath):
+        extension = os.path.splitext(realpath)[1]
+        if extension == ".xw":
+            payload["language"] = "xcas-python-pow"
+        elif extension == ".py":
+            payload["language"] = "python"
+        else:
+            logger.warning("No supported language found. Using python.")
+            payload["language"] = "python"
+        logger.info("Language guessed as %s.", payload["language"])
+        return
 
     # Guess the language based on the files
     files = os.listdir(realpath)

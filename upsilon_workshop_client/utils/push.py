@@ -126,24 +126,40 @@ def extract_files(path: str, payload: dict[str, str | list[dict[str, str]]])\
     # Create the files list
     payload["files"] = []
 
+    # If the path is a file, add it to the list
+    if os.path.isfile(realpath):
+        add_file_to_list(os.path.dirname(realpath), os.path.basename(realpath),
+                         path, payload)
+
+        # Change the file name
+        payload["files"][0]["name"] = os.path.basename(path)
+        return
+
     # Iterate over the files
     for root, _, files in os.walk(realpath):
         for file in files:
             # Ignore the project info file and the README.md
             if file in [".project_info.json", "README.md"]:
                 continue
-            # Get the real path
-            realpath = os.path.realpath(f"{root}/{file}")
-
-            # Get the relative path
-            relativepath = os.path.relpath(realpath, path)
-
-            # Get the file content
-            with open(realpath, "r", encoding="utf-8") as f:
-                content = f.read()
 
             # Add the file to the list
-            payload["files"].append({
-                "name": relativepath,
-                "content": content
-            })
+            add_file_to_list(root, file, path, payload)
+
+
+def add_file_to_list(root: str, file: str, path: str,
+                     payload: dict[str, str | list[dict[str, str]]]) -> None:
+    # Get the real path
+    realpath = os.path.realpath(f"{root}/{file}")
+
+    # Get the relative path
+    relativepath = os.path.relpath(realpath, path)
+
+    # Get the file content
+    with open(realpath, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Add the file to the list
+    payload["files"].append({
+        "name": relativepath,
+        "content": content
+    })
