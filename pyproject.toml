@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "upsilon-workshop-client"
-version = "0.1.0"
+version = "1.0.0"
 description = "A CLI client for the Upsilon Workshop"
 authors = ["Yaya-Cout <yaya.cout@ik.me>"]
 readme = "README.md"
