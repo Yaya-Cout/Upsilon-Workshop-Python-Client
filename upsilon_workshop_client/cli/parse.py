@@ -12,7 +12,7 @@ try:
 except ImportError:
     HAS_RICH_LOGGER = False
 
-from . import workshop, calculator
+from . import workshop, calculator, simulator
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +27,11 @@ app.add_typer(
     calculator.app,
     name="calculator",
     help="Calculator management commands"
+)
+app.add_typer(
+    simulator.app,
+    name="simulator",
+    help="Simulator management commands"
 )
 
 

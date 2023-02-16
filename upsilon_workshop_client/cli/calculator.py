@@ -1,10 +1,10 @@
 """Client for the Upsilon Workshop - Calculator Argument parser."""
 # Standard Library
 import logging
+import asyncio
 
 # Third-party
 import typer
-import asyncio
 
 # Internal modules
 import upsilon_workshop_client.utils.calculator as calculator_utils
