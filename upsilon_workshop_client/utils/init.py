@@ -27,8 +27,11 @@ def init(path: str, url: str) -> None:
     upsilon_workshop_client.utils.push.extract_files(path, payload)
 
     # Ask for confirmation
-    print("The following payload will be sent:")
-    print(payload)
+    print("The project will be initialized with the following parameters:")
+    print(f"\tName: {payload['name']}")
+    print(f"\tDescription: {payload['description']}")
+    print(f"\tLanguage: {payload['language']}")
+    print(f"\tFiles: {[file['name'] for file in payload['files']]}")
     if input("Continue? [y/N] ").lower() != "y":
         logger.debug("Aborting.")
         print("Aborting.")
@@ -79,12 +82,11 @@ def add_project_name_and_description(path: str, payload:
     # Get the name of the project
     basename = os.path.basename(realpath)
 
-
     # Try to get the name from the README.md (first line, without "# ")
     try:
         with open(os.path.join(realpath, "README.md"), "r", encoding="utf-8")\
                 as readme:
-            name = readme.readline().strip("# ")
+            name = readme.readline().strip("# ").strip("\n")
             description = readme.read().strip()
     except (FileNotFoundError, NotADirectoryError):
         name = basename

@@ -7,7 +7,7 @@ import upsilon_py
 logger = logging.getLogger(__name__)
 
 
-async def backup(path):
+async def backup(path: str) -> None:
     """Backup the calculator."""
     logger.info("Backing up calculator to %s...", path)
 

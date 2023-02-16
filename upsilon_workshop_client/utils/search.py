@@ -32,7 +32,6 @@ def display_results(results:
                              box=rich.box.HORIZONTALS)
 
 
-
     for result in results:
         table.add_row(
             result.name,

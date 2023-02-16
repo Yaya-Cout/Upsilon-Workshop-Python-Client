@@ -1,59 +1,76 @@
 """Client for the Upsilon Workshop - Main Argument parser."""
 # Standard Library
 import logging
-import sys
+
+import typer
 
 # Import Rich logger if available
 try:
     from rich.logging import RichHandler
 
-    has_rich_logger = True
+    HAS_RICH_LOGGER = True
 except ImportError:
-    has_rich_logger = False
+    HAS_RICH_LOGGER = False
 
-# Internal
-import upsilon_workshop_client.commands
-import upsilon_workshop_client.cli.parser
+from . import workshop, calculator
 
 logger = logging.getLogger(__name__)
 
 
-def parse_args() -> upsilon_workshop_client.commands.base_command.Command:
+app = typer.Typer(context_settings={"help_option_names": ["-h", "--help"]})
+app.add_typer(
+    workshop.app,
+    name="workshop",
+    help="Workshop interaction commands"
+)
+app.add_typer(
+    calculator.app,
+    name="calculator",
+    help="Calculator management commands"
+)
+
+
+@app.callback()
+def main(
+    ctx: typer.Context,
+    verbose: bool = typer.Option(
+        False,
+        "--verbose",
+        "-v",
+        help="Enable verbose output.",
+    ),
+    url: str = typer.Option(
+        "https://django-cdqivkhudi9mmk5gqgb0.apps.playground.napptive.dev/",
+        help="The URL of the Upsilon Workshop server.",
+    ),
+) -> None:
+    """Upsilon CLI."""
+    if verbose:
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format="%(message)s",
+            datefmt="[%X]",
+            handlers=[RichHandler()] if HAS_RICH_LOGGER
+            else [logging.StreamHandler()],
+        )
+    else:
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(message)s",
+            datefmt="[%X]",
+            handlers=[RichHandler()] if HAS_RICH_LOGGER
+            else [logging.StreamHandler()],
+        )
+
+    # Remove the first and last slash from the url if present
+    url = url.strip("/")
+
+    ctx.obj = {"url": url, "verbose": verbose}
+
+
+def parse_args() -> None:
     """Parse the arguments."""
     logger.debug("Parsing arguments...")
 
-    # Create the parser
-    parser = upsilon_workshop_client.cli.parser.create_parser()
-
     # Parse the arguments
-    args = parser.parse_args()
-
-    # Parse verbosity
-    logging.basicConfig(
-        format="%(message)s",
-        level=logging.WARNING if args.verbose == 0
-        else logging.INFO if args.verbose == 1
-        else logging.DEBUG,
-        handlers=[RichHandler()] if has_rich_logger else None,
-    )
-
-    # Instantiate the appropriate command
-    if args.command == "calculator":
-        command = upsilon_workshop_client.commands.calculator.Calculator(args)
-    elif args.command == "clone":
-        command = upsilon_workshop_client.commands.clone.Clone(args)
-    elif args.command == "init":
-        command = upsilon_workshop_client.commands.init.Init(args)
-    elif args.command == "pull":
-        command = upsilon_workshop_client.commands.pull.Pull(args)
-    elif args.command == "push":
-        command = upsilon_workshop_client.commands.push.Push(args)
-    elif args.command == "search":
-        command = upsilon_workshop_client.commands.search.Search(args)
-    else:
-        # No command specified
-        logger.error("No command specified.")
-        parser.print_help()
-        sys.exit(1)
-
-    return command
+    app()
