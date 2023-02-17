@@ -11,12 +11,13 @@ logger = logging.getLogger(__name__)
 
 def run(project: Optional[str], firmware: str):
     """Run a project."""
-    path = f"{firmware}.bin"
     if project is None:
         logger.log(logging.DEBUG, "Running %s simulator", firmware)
     else:
         logger.log(logging.DEBUG, "Running %s simulator for project %s",
                    firmware, project)
+
+    path = f"{firmware}.{'exe' if os.name == 'nt' else 'bin'}"
 
     # Download the simulator if path does not exist
     if not os.path.exists(path):
@@ -87,7 +88,9 @@ def download_simulator(firmware: str, path: str):
 def download_simulator_upsilon(path: str):
     """Download the Upsilon simulator."""
     bucket_name = 'upsilon-binfiles.appspot.com'
-    file_name = 'beta%2Fsimulator%2Fepsilon.bin'
+
+    # Generate the file name
+    file_name = f"dev%2Fsimulator%2Fepsilon.{path.split('.')[-1]}"
 
     # Get the download token.
     token = get_token(bucket_name, file_name)
@@ -97,7 +100,7 @@ def download_simulator_upsilon(path: str):
           f"{file_name}?alt=media&token={token}"
 
     # Download the file.
-    response = requests.get(url)
+    response = requests.get(url, timeout=30)
 
     # Save the file.
     with open(path, 'w+b') as file:
@@ -110,10 +113,11 @@ def download_simulator_upsilon(path: str):
 def get_token(bucket_name: str, file_name: str) -> str:
     """Get a download token from a Firebase bucket."""
     # Generate the URL of the file.
-    url = f'https://firebasestorage.googleapis.com/v0/b/{bucket_name}/o/{file_name}'
+    url = "https://firebasestorage.googleapis.com/v0/b/" + \
+        f"{bucket_name}/o/{file_name}"
 
     # Download the file.
-    response = requests.get(url)
+    response = requests.get(url, timeout=30)
 
     # Parse the response as JSON.
     json = response.json()
