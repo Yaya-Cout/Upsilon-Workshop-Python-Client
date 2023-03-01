@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "upsilon-workshop-client"
-version = "1.0.0"
+version = "1.0.1"
 description = "A CLI client for the Upsilon Workshop"
 authors = ["Yaya-Cout <yaya.cout@ik.me>"]
 readme = "README.md"
 packages = [{include = "upsilon_workshop_client"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.6"
 requests = "^2.28.1"
 rich = "^13.0.1"
 upsilon-py = "^1.0.0"
