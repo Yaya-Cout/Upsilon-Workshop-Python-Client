@@ -45,7 +45,7 @@ def main(
         help="Enable verbose output.",
     ),
     url: str = typer.Option(
-        "https://django-cdqivkhudi9mmk5gqgb0.apps.playground.napptive.dev/",
+        "https://yann.n1n1.xyz/",
         help="The URL of the Upsilon Workshop server.",
     ),
 ) -> None:

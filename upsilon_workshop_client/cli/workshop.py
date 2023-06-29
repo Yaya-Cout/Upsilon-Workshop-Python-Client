@@ -23,16 +23,18 @@ def clone(
     destination: str = typer.Argument("."),
 ):
     """Clone a project."""
-    # Remove the first and last slash from the project if present
     project = project.strip("/")
 
-    # If the project is just the UUID, we need to add the /scripts/ prefix
     if not project.startswith("/scripts/") and\
             not project.startswith("scripts/"):
         project = f"/scripts/{project}"
 
+    print(ctx.obj["url"], project, destination)
     # If the project is /scripts/UUID, we need to add the url
-    if project.startswith("/scripts/") or project.startswith("scripts/"):
+    if project.startswith("scripts/"):
+        project = "/" + project
+
+    if project.startswith("/scripts/"):
         # Add the url
         project = ctx.obj["url"] + project
 

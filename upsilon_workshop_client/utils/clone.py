@@ -60,7 +60,9 @@ def create_readme(project: upsilon_workshop_client.api.project.Project,
     """Create the README.md file."""
     readme = f"# {project.name}\n\n"
 
-    readme += f"{project.description}\n"
+    readme += f"{project.short_description}\n\n"
+
+    readme += f"{project.long_description}\n"
 
     # If the path is a file, don't write the readme
     if os.path.isfile(path):

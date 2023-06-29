@@ -38,7 +38,7 @@ def display_results(results:
             result.author,
             result.language,
             result.version,
-            result.description,
+            result.short_description,
             result.url,
         )
 

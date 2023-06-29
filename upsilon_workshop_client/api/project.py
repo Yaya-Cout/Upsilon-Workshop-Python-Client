@@ -24,7 +24,10 @@ class Project:
         logger.debug("Parsing project...")
 
         # Add url to the project
-        self.url: str = self.project["url"]
+        # self.url: str = self.project["url"]
+        # Remove the server url from the project url (keep only the /scripts/UUID/)
+        self.url: str = "/scripts/" + self.project["url"].split("/scripts/")[-1]
+
 
         # Add name to the project
         self.name: str = self.project["name"]
@@ -43,14 +46,19 @@ class Project:
         # Add version to the project
         self.version: str = self.project["version"]
 
-        # Add description to the project
-        self.description: str = self.project["description"]
+        # Add short description to the project
+        self.short_description: str = self.project["short_description"]
+
+        # Add long description to the project
+        self.long_description: str = self.project["long_description"]
 
         # Add ratings to the project
         self.ratings: float = self.project["ratings"]
 
         # Add author to the project
-        self.author: str = self.project["author"]
+        self.author: str = self.project["author"].split("/")[-2]
+
+        # TODO: Collaborators
 
         # Add files to the project
         self.files: list[dict[str, str]] = self.project["files"]
